@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Meteo - Estacion ambiental</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="/styles.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.js"></script>
+</head>
+<body>
+<main class="app">
+
+  <header class="top">
+    <div>
+      <h1 class="logo">Meteo<span>.</span></h1>
+      <p class="sub">Terminal ambiental &middot; Sensor DHT11 &middot; ESP32</p>
+    </div>
+    <div id="live" class="live"><span class="dot"></span><span id="liveTxt">Conectando</span></div>
+  </header>
+
+  <section class="kpis">
+    <article class="card">
+      <div class="kpi-head">
+        <span class="label">Temperatura</span>
+        <span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26a4.5 4.5 0 1 0 5 0z"/></svg></span>
+      </div>
+      <div class="value"><span id="tVal">--</span><small>&deg;C</small></div>
+      <p class="note" id="tNote">Lectura instantanea DHT11</p>
+      <div class="bar"><i id="tBar" class="fill temp"></i></div>
+    </article>
+
+    <article class="card">
+      <div class="kpi-head">
+        <span class="label">Humedad</span>
+        <span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg></span>
+      </div>
+      <div class="value"><span id="hVal">--</span><small>%</small></div>
+      <p class="note" id="hNote">Humedad relativa ambiente</p>
+      <div class="bar"><i id="hBar" class="fill hum"></i></div>
+    </article>
+
+    <article class="card">
+      <div class="kpi-head">
+        <span class="label">Punto de rocio</span>
+        <span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 16.58A5 5 0 0 0 18 7h-1.26A8 8 0 1 0 4 15.25"/><line x1="8" y1="19" x2="8" y2="21"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="16" y1="19" x2="16" y2="21"/></svg></span>
+      </div>
+      <div class="value"><span id="dVal">--</span><small>&deg;C</small></div>
+      <p class="note" id="dNote">Formula de Magnus</p>
+      <div class="bar"><i id="dBar" class="fill dew"></i></div>
+    </article>
+
+    <article class="card">
+      <div class="kpi-head">
+        <span class="label">Confort</span>
+        <span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg></span>
+      </div>
+      <div class="value"><span id="cVal">--</span><small>/100</small></div>
+      <p class="note" id="cNote">Indice de confort</p>
+      <div class="bar"><i id="cBar" class="fill comf"></i></div>
+    </article>
+  </section>
+
+  <section class="main">
+    <article class="card">
+      <div class="chart-head">
+        <span class="label">Historico ambiental</span>
+        <div class="pills" id="rangos">
+          <button data-h="1">1H</button>
+          <button data-h="24" class="active">24H</button>
+          <button data-h="168">7D</button>
+          <button data-h="720">30D</button>
+        </div>
+      </div>
+      <div class="chart-wrap">
+        <canvas id="chart"></canvas>
+        <p id="chartVacio" class="vacio">Aun no hay datos en este periodo</p>
+      </div>
+      <div class="stats">
+        <div class="stat"><span class="k">Temp. min / max / prom</span><span class="v" id="sTemp">--</span></div>
+        <div class="stat"><span class="k">Humedad min / max / prom</span><span class="v" id="sHum">--</span></div>
+        <div class="stat"><span class="k">Muestras</span><span class="v" id="sN">--</span></div>
+      </div>
+    </article>
+
+    <aside class="card">
+      <div class="node-head">
+        <span class="label">Nodo ESP32</span>
+        <span id="nodeBadge" class="badge">--</span>
+      </div>
+      <div class="ring-wrap">
+        <svg viewBox="0 0 160 160" class="ring-svg">
+          <circle class="ring-bg" cx="80" cy="80" r="70" fill="none" stroke-width="12"/>
+          <circle id="ring" class="ring" cx="80" cy="80" r="70" fill="none" stroke-width="12"/>
+        </svg>
+        <div class="ring-center"><strong id="ringVal">--</strong><span id="ringTxt">Sin datos</span></div>
+      </div>
+      <ul class="rows">
+        <li><span>Red</span><span id="nRed">--</span></li>
+        <li><span>Senal</span><span id="nSenal">--</span></li>
+        <li><span>IP local</span><span id="nIp">--</span></li>
+        <li><span>Firmware</span><span id="nFw">--</span></li>
+        <li><span>Encendido hace</span><span id="nUp">--</span></li>
+        <li><span>Ultima lectura</span><span id="nVisto">--</span></li>
+      </ul>
+    </aside>
+  </section>
+
+  <footer>Meteo &middot; datos actualizados automaticamente</footer>
+</main>
+<script src="/app.js"></script>
+</body>
+</html>

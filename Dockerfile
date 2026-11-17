@@ -5,15 +5,15 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
 
 WORKDIR /app
 
-COPY requirements.txt .
+COPY servidor/requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
 RUN useradd --create-home --uid 10001 app \
     && mkdir -p /app/data \
     && chown app:app /app/data
 
-COPY main.py .
-COPY static ./static
+COPY servidor/main.py .
+COPY servidor/static ./static
 
 ENV DB_PATH=/app/data/estacion.db
 

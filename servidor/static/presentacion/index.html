@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Meteo - Presentacion</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&display=swap">
+<link rel="stylesheet" href="deck.css">
+</head>
+<body>
+<div class="wrap">
+<div class="deck" id="deck">
+
+<section class="slide">
+  <div class="cover">
+    <div>
+      <span class="kick">Proyecto IoT &middot; Estaci&oacute;n ambiental</span>
+      <div class="big">Meteo<i>.</i></div>
+      <p class="lead">Estaci&oacute;n meteorol&oacute;gica conectada: del sensor en la protoboard a un dashboard en la nube.</p>
+      <div class="tags"><span class="tag">ESP32</span><span class="tag">DHT11</span><span class="tag">OLED</span><span class="tag">FastAPI</span><span class="tag">SQLite</span><span class="tag">Docker</span><span class="tag">Dokploy</span></div>
+    </div>
+    <div class="mock">
+      <div class="m"><span class="kick">Temperatura</span><div class="mv">24.8<small>&deg;C</small></div><div class="bar"><i class="bt"></i></div></div>
+      <div class="m"><span class="kick">Humedad</span><div class="mv">48<small>%</small></div><div class="bar"><i class="bh"></i></div></div>
+      <div class="m wide">
+        <svg class="ring" viewBox="0 0 100 100"><circle cx="50" cy="50" r="40" fill="none" stroke="#eef0eb" stroke-width="11"/><circle cx="50" cy="50" r="40" fill="none" stroke="#4fa37a" stroke-width="11" stroke-linecap="round" stroke-dasharray="251.33" stroke-dashoffset="15.1" transform="rotate(-90 50 50)"/></svg>
+        <div><span class="kick">Confort</span><div class="mv">94<small>/100</small></div><span class="kick">Roc&iacute;o 13.0 &deg;C</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><span class="logo">Meteo<i>.</i></span><span class="num"></span></div>
+</section>
+
+<section class="slide">
+  <span class="kick">01 &middot; Objetivo</span>
+  <div class="ttl">Medir, guardar y <em>mostrar</em> el ambiente</div>
+  <div class="grid g3">
+    <div class="card"><span class="n">01</span><b>Capturar</b><p>Temperatura y humedad cada 2,5 s con un sensor DHT11 conectado a un ESP32.</p></div>
+    <div class="card"><span class="n">02</span><b>Almacenar</b><p>Cada 30 s la lectura viaja a la nube y queda registrada con la hora del servidor.</p></div>
+    <div class="card"><span class="n">03</span><b>Visualizar</b><p>Dashboard web en tiempo real con hist&oacute;rico, m&iacute;nimos, m&aacute;ximos y promedios.</p></div>
+  </div>
+  <p class="txt">Un proyecto completo de punta a punta: electr&oacute;nica, firmware, backend, base de datos, despliegue y seguridad.</p>
+  <div class="foot"><span class="logo">Meteo<i>.</i></span><span class="num"></span></div>
+</section>
+
+<section class="slide">
+  <span class="kick">02 &middot; Arquitectura</span>
+  <div class="ttl">Del sensor a la <em>nube</em></div>
+  <div class="arch">
+    <div class="col"><span class="kick">En el borde</span>
+      <div class="nd"><b>DHT11</b><span>Temperatura y humedad</span></div>
+      <div class="nd"><b>ESP32</b><span>Procesa y env&iacute;a</span></div>
+      <div class="nd"><b>OLED</b><span>Estado local en vivo</span></div>
+    </div>
+    <span class="arw">&rarr;</span>
+    <div class="col"><span class="kick">En tr&aacute;nsito</span>
+      <div class="nd"><b>WiFi 2,4 GHz</b><span>Varias redes guardadas</span></div>
+      <div class="nd"><b>HTTPS / TLS</b><span>Certificado validado</span></div>
+      <div class="nd"><b>JSON + token</b><span>Autenticaci&oacute;n Bearer</span></div>
+    </div>
+    <span class="arw">&rarr;</span>
+    <div class="col"><span class="kick">En la nube</span>
+      <div class="nd"><b>Traefik</b><span>HTTPS con Let&rsquo;s Encrypt</span></div>
+      <div class="nd"><b>FastAPI + SQLite</b><span>API y almacenamiento</span></div>
+      <div class="nd"><b>Dashboard</b><span>Gr&aacute;ficos en tiempo real</span></div>
+    </div>
+  </div>
+  <div class="foot"><span class="logo">Meteo<i>.</i></span><span class="num"></span></div>
+</section>
+
+<section class="slide">
+  <span class="kick">03 &middot; Hardware</span>
+  <div class="ttl">Componentes <em>accesibles</em></div>
+  <div class="grid g4">
+    <div class="card"><span class="n">MCU</span><b>ESP32 DevKit</b><p>Microcontrolador de doble n&uacute;cleo con WiFi integrado. Es el cerebro de la estaci&oacute;n.</p></div>
+    <div class="card"><span class="n">Sensor</span><b>DHT11</b><p>Temperatura 0&ndash;50 &deg;C (&plusmn;2 &deg;C) y humedad 20&ndash;80 % (&plusmn;5 %).</p></div>
+    <div class="card"><span class="n">Pantalla</span><b>OLED 0,96&quot;</b><p>SSD1306 de 128&times;64 px por I&sup2;C para ver los datos sin computador.</p></div>
+    <div class="card"><span class="n">Montaje</span><b>2 mini protoboards</b><p>Dos placas de 170 puntos: montaje limpio, ordenado y sin soldar.</p></div>
+  </div>
+  <p class="txt">Alimentaci&oacute;n por USB-C a 5 V: basta un cargador de celular o un power bank.</p>
+  <div class="foot"><span class="logo">Meteo<i>.</i></span><span class="num"></span></div>
+</section>
+
+<section class="slide">
+  <span class="kick">04 &middot; Montaje</span>
+  <div class="ttl">Conexiones <em>ordenadas</em></div>
+  <div class="grid g2">
+    <div class="card">
+      <table class="tbl">
+        <tr><th>Pin ESP32</th><th>Conecta a</th></tr>
+        <tr><td><span class="dot d4"></span><span class="mono">D4</span></td><td>DATA del DHT11</td></tr>
+        <tr><td><span class="dot d21"></span><span class="mono">D21</span></td><td>SDA de la OLED</td></tr>
+        <tr><td><span class="dot d22"></span><span class="mono">D22</span></td><td>SCL de la OLED</td></tr>
+        <tr><td><span class="dot d3"></span><span class="mono">3V3</span></td><td>VCC de ambos m&oacute;dulos</td></tr>
+        <tr><td><span class="dot dg"></span><span class="mono">GND</span></td><td>GND de ambos m&oacute;dulos</td></tr>
+      </table>
+    </div>
+    <div class="card">
+      <ul class="lst">
+        <li>El ESP32 va entre las dos protoboards: cada pin queda en su propia media fila.</li>
+        <li>Los m&oacute;dulos se pinchan en la mitad exterior y se unen con 7 cables cortos.</li>
+        <li>Todo funciona a 3,3 V, el nivel l&oacute;gico seguro para el ESP32.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="foot"><span class="logo">Meteo<i>.</i></span><span class="num"></span></div>
+</section>
+
+<section class="slide">
+  <span class="kick">05 &middot; Firmware</span>
+  <div class="ttl">Un ciclo simple y <em>robusto</em></div>
+  <div class="grid g2">
+    <ol class="steps">
+      <li>Se conecta a la mejor red WiFi disponible.</li>
+      <li>Sincroniza la hora por NTP para validar TLS.</li>
+      <li>Lee el DHT11 cada 2,5 s y actualiza la OLED.</li>
+      <li>Cada 30 s env&iacute;a la lectura por HTTPS.</li>
+      <li>Muestra en pantalla la respuesta de la API.</li>
+    </ol>
+<div class="code"><span class="c">POST /api/lecturas</span>
+<span class="c">Authorization: Bearer &bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;</span>
+
+{
+  <span class="k">"temperatura"</span>: <span class="v">24.8</span>,
+  <span class="k">"humedad"</span>: <span class="v">48.0</span>,
+  <span class="k">"rssi"</span>: <span class="v">-58</span>,
+  <span class="k">"uptime"</span>: <span class="v">3600</span>,
+  <span class="k">"fw"</span>: <span class="s">"1.0.0"</span>
+}</div>
+  </div>
+  <div class="foot"><span class="logo">Meteo<i>.</i></span><span class="num"></span></div>
+</section>
+
+<section class="slide">
+  <span class="kick">06 &middot; Backend</span>
+  <div class="ttl">Una API <em>peque&ntilde;a</em> y clara</div>
+  <div class="grid g2">
+    <div class="card">
+      <table class="tbl">
+        <tr><td><span class="mth post">POST</span></td><td class="mono">/api/lecturas</td><td>Recibe lecturas</td></tr>
+        <tr><td><span class="mth get">GET</span></td><td class="mono">/api/actual</td><td>&Uacute;ltima lectura y nodo</td></tr>
+        <tr><td><span class="mth get">GET</span></td><td class="mono">/api/historico</td><td>Serie por rango</td></tr>
+        <tr><td><span class="mth get">GET</span></td><td class="mono">/api/resumen</td><td>M&iacute;n, m&aacute;x, promedio</td></tr>
+        <tr><td><span class="mth get">GET</span></td><td class="mono">/health</td><td>Monitoreo</td></tr>
+      </table>
+    </div>
+    <div class="card">
+      <b>SQLite en modo WAL</b>
+      <div class="f">lecturas<br>ts &middot; temperatura &middot; humedad &middot; rssi</div>
+      <div class="f">dispositivo<br>ssid &middot; ip &middot; fw &middot; uptime &middot; visto</div>
+      <p>La fecha y hora la asigna el servidor, nunca el dispositivo.</p>
+    </div>
+  </div>
+  <div class="foot"><span class="logo">Meteo<i>.</i></span><span class="num"></span></div>
+</section>
+
+<section class="slide">
+  <span class="kick">07 &middot; Datos</span>
+  <div class="ttl">M&aacute;s que dos <em>n&uacute;meros</em></div>
+  <div class="grid g3">
+    <div class="card"><b>Punto de roc&iacute;o</b>
+      <div class="f">&gamma; = ln(HR/100) + aT/(b+T)<br>Td = b&gamma; / (a &minus; &gamma;)</div>
+      <p>F&oacute;rmula de Magnus (a = 17,62; b = 243,12). Indica el riesgo de condensaci&oacute;n.</p></div>
+    <div class="card"><b>&Iacute;ndice de confort</b>
+      <div class="f">100 &minus; penalizaciones</div>
+      <p>Ideal entre 20&ndash;24 &deg;C y 40&ndash;60 % de humedad. Puntaje de 0 a 100.</p></div>
+    <div class="card"><b>Agregaci&oacute;n</b>
+      <table class="tbl">
+        <tr><td>1H</td><td>cada minuto</td></tr>
+        <tr><td>24H</td><td>cada 10 min</td></tr>
+        <tr><td>7D</td><td>cada hora</td></tr>
+        <tr><td>30D</td><td>cada 4 h</td></tr>
+      </table></div>
+  </div>
+  <div class="foot"><span class="logo">Meteo<i>.</i></span><span class="num"></span></div>
+</section>
+
+<section class="slide">
+  <span class="kick">08 &middot; Seguridad</span>
+  <div class="ttl">Dise&ntilde;ado con mentalidad de <em>pentester</em></div>
+  <div class="grid g3">
+    <div class="card"><b>Autenticaci&oacute;n</b><p>Token Bearer comparado en tiempo constante (HMAC).</p></div>
+    <div class="card"><b>Cifrado</b><p>HTTPS con Let&rsquo;s Encrypt; el ESP32 valida la CA ra&iacute;z.</p></div>
+    <div class="card"><b>Validaci&oacute;n</b><p>Rangos f&iacute;sicos con Pydantic: lo imposible se rechaza.</p></div>
+    <div class="card"><b>Rate limiting</b><p>M&aacute;ximo 12 env&iacute;os por minuto por IP.</p></div>
+    <div class="card"><b>Integridad</b><p>Hora del servidor y datos renderizados sin HTML: sin XSS.</p></div>
+    <div class="card"><b>Superficie m&iacute;nima</b><p>Sin /docs, cabeceras CSP, contenedor sin root, secretos fuera de Git.</p></div>
+  </div>
+  <p class="note">Riesgo conocido: las credenciales quedan en la flash del ESP32. En producci&oacute;n: flash encryption y secure boot.</p>
+  <div class="foot"><span class="logo">Meteo<i>.</i></span><span class="num"></span></div>
+</section>
+
+<section class="slide">
+  <span class="kick">09 &middot; Despliegue</span>
+  <div class="ttl">De un <em>git push</em> a producci&oacute;n</div>
+  <div class="flow">
+    <div class="card"><span class="n">01</span><b>GitHub</b><p>C&oacute;digo versionado, sin secretos.</p></div>
+    <span class="arw">&rarr;</span>
+    <div class="card"><span class="n">02</span><b>Dokploy</b><p>Build autom&aacute;tico con Dockerfile.</p></div>
+    <span class="arw">&rarr;</span>
+    <div class="card"><span class="n">03</span><b>Docker</b><p>Contenedor y volumen persistente.</p></div>
+    <span class="arw">&rarr;</span>
+    <div class="card"><span class="n">04</span><b>Traefik</b><p>Dominio con HTTPS autom&aacute;tico.</p></div>
+  </div>
+  <p class="txt">Servidor activo 24/7 con URL fija: el ESP32 sigue enviando datos aunque el computador est&eacute; apagado.</p>
+  <div class="foot"><span class="logo">Meteo<i>.</i></span><span class="num"></span></div>
+</section>
+
+<section class="slide">
+  <span class="kick">10 &middot; Pruebas</span>
+  <div class="ttl">Probando que <em>no</em> se rompe</div>
+  <div class="card">
+    <table class="tbl">
+      <tr><th>Prueba</th><th>Resultado esperado</th></tr>
+      <tr><td>Lectura v&aacute;lida con token</td><td><span class="bdg ok">201 Creado</span></td></tr>
+      <tr><td>Token falso o sin cabecera Authorization</td><td><span class="bdg bad">401 No autorizado</span></td></tr>
+      <tr><td>Temperatura de 500 &deg;C</td><td><span class="bdg warn">422 Fuera de rango</span></td></tr>
+      <tr><td>M&aacute;s de 12 env&iacute;os en un minuto</td><td><span class="bdg warn">429 Demasiadas solicitudes</span></td></tr>
+      <tr><td>Abrir /docs de la API</td><td><span class="bdg neu">404 Desactivado</span></td></tr>
+    </table>
+  </div>
+  <div class="foot"><span class="logo">Meteo<i>.</i></span><span class="num"></span></div>
+</section>
+
+<section class="slide">
+  <span class="kick">11 &middot; Pr&oacute;ximos pasos</span>
+  <div class="ttl">C&oacute;mo <em>crecer&iacute;a</em> el proyecto</div>
+  <div class="grid g3">
+    <div class="card"><b>Hardware</b><ul class="mini"><li>Sensor SHT40 o BME280: m&aacute;s precisi&oacute;n y presi&oacute;n.</li><li>Bater&iacute;a y panel solar con deep sleep.</li></ul></div>
+    <div class="card"><b>Software</b><ul class="mini"><li>Alertas por Telegram o correo.</li><li>Actualizaciones OTA del firmware.</li><li>Exportar datos a CSV.</li></ul></div>
+    <div class="card"><b>Seguridad</b><ul class="mini"><li>Flash encryption y secure boot.</li><li>Un token por dispositivo, con rotaci&oacute;n.</li></ul></div>
+  </div>
+  <div class="foot"><span class="logo">Meteo<i>.</i></span><span class="num"></span></div>
+</section>
+
+<section class="slide">
+  <div class="end">
+    <span class="kick">Meteo &middot; Estaci&oacute;n ambiental IoT</span>
+    <div class="big">Gracias<i>.</i></div>
+    <p class="lead">&iquest;Preguntas? Vamos a ver la estaci&oacute;n funcionando.</p>
+    <a class="demo" href="https://meteo.sev7nep.com" target="_blank" rel="noopener noreferrer">Mirar demo en vivo <span>&rarr;</span></a>
+    <div class="tags"><span class="tag">ESP32</span><span class="tag">FastAPI</span><span class="tag">Dokploy</span><span class="tag">HTTPS</span></div>
+  </div>
+  <div class="foot"><span class="logo">Meteo<i>.</i></span><span class="num"></span></div>
+</section>
+
+</div>
+
+<div class="ctrl">
+  <button class="nav" id="prev" aria-label="Diapositiva anterior">&larr;</button>
+  <div id="dots"></div>
+  <span id="cnt"></span>
+  <button class="nav" id="next" aria-label="Diapositiva siguiente">&rarr;</button>
+</div>
+</div>
+<script src="deck.js"></script>
+</body>
+</html>
